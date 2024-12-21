@@ -3,7 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {
-  children: React.ReactElement | React.ReactNode;
+  children: React.ReactElement;
 }
 
 export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
