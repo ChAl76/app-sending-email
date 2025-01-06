@@ -9,17 +9,18 @@ export const api = axios.create({
   },
 });
 
-// Interceptor для добавления Basic Auth
-api.interceptors.request.use((config) => {
-  const credentials = localStorage.getItem('credentials');
-  if (credentials) {
-    const { username, password } = JSON.parse(credentials);
-    config.headers.Authorization = `Basic ${btoa(`${username}:${password}`)}`;
-  }
-  return config;
-});
+api.interceptors.request.use(
+  (config) => {
+    const credentials = localStorage.getItem('credentials');
+    if (credentials) {
+      const { username, password } = JSON.parse(credentials);
+      config.headers.Authorization = `Basic ${btoa(`${username}:${password}`)}`;
+    }
+    return config;
+  },
+  (err) => Promise.reject(err)
+);
 
-// Interceptor для обработки ошибок
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -31,7 +32,6 @@ api.interceptors.response.use(
   }
 );
 
-// Функция для проверки актуальности токена
 export const validateAuth = async () => {
   try {
     await api.get('users/current/');
